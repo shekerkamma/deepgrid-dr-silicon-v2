@@ -17,7 +17,7 @@ const partPosters: Record<string, string> = {
 };
 
 export default function Page() {
-  const {navigate, go} = useNav();
+  const {navigate, go, href} = useNav();
   return (
     <Shell route="products">
       <section className="page-wrap"><SectionHead tag="02 / PRODUCT FAMILY" title="One footprint, two chips" copy="DG32-LITE is the motor-control SoC. DG32-2DOM keeps every pin and peripheral and adds an INT8 attention engine, so a board designed for one takes the other."/>
@@ -51,23 +51,25 @@ export default function Page() {
   >
    <div className="table-scroll">
     <table className="dr-table dr-table-wide">
-     <caption>The ten-chip portfolio, and where DG32 sits in it</caption>
+     {/* Per-chip facts live on /applications (one home per fact); this table keeps only what the
+         mature-node argument needs, and each part opens its card there. */}
+     <caption>The ten-chip portfolio and where DG32 sits in it. Each part opens its card on the applications page, with where it goes, what it replaces and what it rests on.</caption>
      <thead>
       <tr>
        <th scope="col">SKU</th><th scope="col">Part</th><th scope="col">Node</th>
-       <th scope="col">Foundry</th><th scope="col">What it does</th>
       </tr>
      </thead>
      <tbody>
-      {sovereignSkuHorizon.map(k => (
+      {sovereignSkuHorizon.map(k => {
+       const chip = k.sku === 'Track B' ? 'd100' : 'sku' + k.sku.replace(/\D/g, '').slice(0, 1);
+       return (
        <tr key={k.sku + k.name}>
         <th scope="row">{k.sku}</th>
-        <td>{k.isDg32 ? <strong>{k.name}</strong> : k.name}</td>
+        <td><a className="st-link" href={href('applications') + '#chip-' + chip}>{k.isDg32 ? <strong>{k.name}</strong> : k.name}</a></td>
         <td>{k.node}</td>
-        <td>{k.phase}</td>
-        <td>{k.targetApp}</td>
        </tr>
-      ))}
+       );
+      })}
      </tbody>
     </table>
    </div>

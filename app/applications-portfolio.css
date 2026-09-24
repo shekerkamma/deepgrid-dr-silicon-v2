@@ -80,6 +80,7 @@
   color: var(--foreground);
   transition: border-color .15s ease;
 }
+.pf-card { scroll-margin-top: 80px; }
 .pf-card:hover { border-color: var(--copper); }
 .pf-card:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
 .pf-card-scene { margin: 0; border-bottom: 1px solid var(--rule); }

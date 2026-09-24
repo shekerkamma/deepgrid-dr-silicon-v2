@@ -7,7 +7,6 @@ import {Eyebrow, DataTable, Callout} from './detail';
 import {evidenceLadder, faultPath, notClaimed} from './detail-content';
 import {areas, products} from './applications-story-data';
 import {useNav} from './shell';
-import './story.css';
 import {headline} from './content';
 import './overview.css';
 

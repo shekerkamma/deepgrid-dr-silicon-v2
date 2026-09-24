@@ -29,8 +29,8 @@ export const notClaimed = [
   'No functional-safety certification. Hardware lockstep is a mechanism, not a certificate.',
   'No sign-off result for the tape-in die: the four gates it must pass are listed, not reported as passed.',
   'No price or cost claims against any competitor.',
-  'No silicon result for any DeepGrid chip but DG32-LITE: the other nine rest on architecture sheets and FPGA prototypes.',
-  'No market size, price or revenue for the wider portfolio: the portfolio annex flags its market panels as internal estimates.',
+  'No silicon result for the other nine chips: none is on a shuttle, and they rest on architecture sheets and logic validated on an FPGA. The one DeepGrid chip returned so far is a 130 nm test chip made on its own flow (whitepaper v3, §3).',
+  'No market size or price for the wider portfolio: the annex market tiles are rough internal estimates and are not shown. The only revenue figures on this site are the plan targets on the company page, which are not results.',
 ];
 
 // ---------- Product family ----------
@@ -676,7 +676,8 @@ export interface SkuRoadmapItem {
  *  - DG32-2DOM was numbered SKU-2, which is the Smart-Meter SoC. 2DOM is not one of the nine:
  *    it is the DG32-LITE die plus the INT8 engine, so it is recorded as a SKU-4 variant.
  *  - DG-D100 was numbered SKU-3, which is the Hi-Rel PMIC. D100 is **Track B**, funded and
- *    scoped separately, and it is TSMC 28 nm rather than the 65 nm previously listed.
+ *    scoped separately. Its node is the Annex matrix's "130nm + 28nm SiP": a 130 nm die and a TSMC
+ *    28 nm die in one package (2026-09-24; it was listed as 65 nm, then as TSMC 28 nm alone).
  *  - Nodes for SKU-8 and SKU-9 were wrong: 130 nm HV CMOS and 130 nm + 180 nm respectively.
  *
  *  "Phase" now means what the source means by it. The mature-silicon architecture defines three
@@ -700,7 +701,7 @@ export const sovereignSkuHorizon: SkuRoadmapItem[] = [
   { sku: 'SKU-7', name: 'DG-RADAR-77', phase: 'Phase 2 · IHP (Germany)', node: '0.13 µm SiGe BiCMOS', foundry: 'IHP Microelectronics', targetApp: '77 GHz 4D MIMO radar front end, fabricated outside US export control' },
   { sku: 'SKU-8', name: 'DG-DISP-17', phase: 'Phase 1 · SkyWater (USA)', node: '130 nm HV CMOS', foundry: 'SkyWater', targetApp: 'Rugged cockpit display driver, 0–12 V column amplifiers with compensated gamma' },
   { sku: 'SKU-9', name: 'DG-SDV-ZONE', phase: 'Phase 1 · SkyWater (USA)', node: '130 nm + 180 nm', foundry: 'SkyWater', targetApp: 'Zonal gateway: 16 smart e-fuses and four-port Gigabit TSN, replacing relay boxes' },
-  { sku: 'Track B', name: 'DG-D100', phase: 'Separate track', node: 'TSMC 28 nm, multi-die SiP', foundry: 'TSMC', targetApp: 'Tactical drone SoC with an independent hardware failsafe island wired to the ESCs' },
+  { sku: 'Track B', name: 'DG-D100', phase: 'Separate track', node: '130 nm + 28 nm, multi-die SiP', foundry: 'TSMC (28 nm die)', targetApp: 'Tactical drone SoC with an independent hardware failsafe island wired to the ESCs' },
 ];
 
 

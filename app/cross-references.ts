@@ -85,6 +85,7 @@ export const related: Record<RouteId, Related> = {
       {id: 'control', why: 'The cycle budget every task on this page is spending.'},
       {id: 'evidence', why: 'What each chip on this page rests on, from FPGA prototype to first silicon.'},
       {id: 'products', why: 'The two DG32 parts in detail, and the portfolio table they sit in.'},
+      {id: 'company', why: 'What each chip line is planned to earn, labelled as plan targets, not results.'},
       {id: 'ask', why: 'Put a specific task to the knowledge graph and get a cited answer.'},
     ],
     docs: ['doc1', 'doc2'],
@@ -127,6 +128,7 @@ export const related: Record<RouteId, Related> = {
   },
   company: {
     sections: [
+      {id: 'applications', why: 'Where each chip in the revenue plan goes, and what it rests on today.'},
       {id: 'procurement', why: 'The competitive position behind the revenue plan.'},
       {id: 'evidence', why: 'Every figure on this site, graded, including the withdrawn ones.'},
       {id: 'resources', why: 'The whitepaper the plan and the stress test come from.'},

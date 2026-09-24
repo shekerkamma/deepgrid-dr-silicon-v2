@@ -4,7 +4,7 @@ import {useMemo, useState} from 'react';
 import {ArrowRight, ArrowUpRight, Search} from 'lucide-react';
 import {url} from './routes';
 import {sovereignSkuHorizon} from './detail-content';
-import {areas, products, type ProductId} from './applications-story-data';
+import {areas, citeDoc, products, type ProductId} from './applications-story-data';
 import './applications-portfolio.css';
 
 /** The portfolio by where it goes, structured like the showcase's Product lines page
@@ -19,7 +19,7 @@ import './applications-portfolio.css';
  *  under one line, as in the reference; the other places it goes are part of its "Used for".
  *  The SoC2 die render is not used anywhere here: it is printed "39.3 TOPS", a withdrawn claim. */
 
-const PDF = '/downloads/docs/deepgrid-sku-compendium-technical-annex-v3.pdf';
+const ANNEX = citeDoc('doc2');
 const scene: Record<string, {src: string; alt: string}> = {
   motors: {src: '/media/deepgrid_robotics.jpg', alt: 'Concept render of an autonomous forklift in a warehouse aisle, its sensor beams sweeping the racks'},
   vehicles: {src: '/media/deepgrid_truck.jpg', alt: 'Concept render of a DeepGrid-liveried truck on a wet highway at dusk, a camera-mirror display beside the cab'},
@@ -50,12 +50,11 @@ const rows: Row[] = (Object.keys(products) as ProductId[]).map(id => {
     usedFor: inAreas.map(a => a.items.find(i => i.product === id)!.role),
     inAreas: inAreas.map(a => a.id),
     replaces: p.replaces, status: p.status,
-    // D100: the Annex matrix gives the package as 130 nm + 28 nm SiP, which the site's TSMC 28 nm entry is one die of.
-    node: id === 'd100' ? '130 nm + 28 nm, multi-die SiP' : sku.node, made: sku.phase.replace(/^Phase \d · /, ''),
+    node: sku.node, made: sku.phase.replace(/^Phase \d · /, ''),
     onSilicon: id === 'sku4',
     evidence: p.evidence,
     // the card's short status, from the same evidence field /evidence grades the portfolio with
-    stage: p.evidence.startsWith('First silicon') ? 'First silicon' : p.evidence.startsWith('FPGA') ? 'FPGA prototype' : 'Design only',
+    stage: p.evidence.startsWith('First silicon') ? 'First silicon' : p.evidence.startsWith('FPGA') ? 'FPGA-validated' : 'Design only',
   };
 });
 
@@ -151,9 +150,9 @@ export default function ApplicationsPortfolio() {
                 <div className="pf-grid">
                   {members.map(r => {
                     const deep = r.onSilicon;
-                    const href = deep ? '#st-answer' : url(PDF) + '#page=' + r.sheet;
+                    const href = deep ? '#st-answer' : url(ANNEX.pdf);
                     return (
-                      <a key={r.id} className="pf-card" href={href} {...(deep ? {} : {target: '_blank', rel: 'noreferrer'})}>
+                      <a key={r.id} id={'chip-' + r.id} className="pf-card" href={href} {...(deep ? {} : {target: '_blank', rel: 'noreferrer'})}>
                         <div className="pf-card-body">
                           <span className="pf-meta">{a.name}<span className="num">{r.tag}</span></span>
                           <h3>{r.name}</h3>

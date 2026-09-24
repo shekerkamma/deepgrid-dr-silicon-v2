@@ -6,9 +6,8 @@ import {evidenceLadder, notClaimed} from '../detail-content';
 import {claims, withheld, type EvidenceKind} from '../claims';
 import Related from '../related';
 import {FilmMoment, type Clip} from '../evidence-clip';
-import {areas, products, type ProductId} from '../applications-story-data';
+import {citeDoc, products, type ProductId} from '../applications-story-data';
 import {url} from '../routes';
-import '../story.css';
 
 /** The moment in a narrated film where each kind of evidence is actually on screen, with the deck
  *  slide that states it as the poster. Timings are the film segment maps in app/data/*-film.json;
@@ -55,8 +54,6 @@ const clips: Record<string, Clip> = {
  *  this site that rest on it (from the claim map, which scripts/check-claims.mjs re-verifies against
  *  the source documents), and the film moment where it is explained.
  */
-const ANNEX = '/downloads/docs/deepgrid-sku-compendium-technical-annex-v3.pdf';
-
 const beats: {kind: EvidenceKind; id: string; title: string; after: string}[] = [
   {kind: 'Simulated', id: 'ev-simulated',
     title: 'Simulation shows the design behaves as intended before any silicon exists.',
@@ -200,27 +197,30 @@ export default function Page() {
               <p className="st-fam-kicker">The rest of the portfolio</p>
               <h2 id="ev-portfolio-h">The other nine chips rest on design documents and FPGA prototypes, not silicon.</h2>
               <p>
-                Everything the applications page says about them, where they go, what they replace and
-                how they are built, comes from the portfolio annex. None has been fabricated. Three have
-                logic running on an FPGA, which the sheets themselves call validation of the design, not
-                the product; the rest are architecture sheets.
+                Where they go and what they replace are on the applications page, from the portfolio
+                annex. None has been fabricated. Four have named logic running as circuit code on an FPGA,
+                which the whitepaper counts as designed rather than done: 81.25&nbsp;MHz is, in its words,
+                &ldquo;a limit of the FPGA, not of our design&rdquo;. The rest are architecture sheets.
               </p>
             </div>
             <div className="st-beat-wide">
               <div className="st-table-scroll">
                 <table className="st-models">
-                  <caption>What each chip rests on today, from its sheet in the SKU Architecture Compendium (Technical Annex v3)</caption>
+                  <caption>What each chip rests on today. Chip names open the chip on the applications page.</caption>
                   <thead>
-                    <tr><th scope="col">Chip</th><th scope="col">Where it goes</th><th scope="col">Strongest evidence today</th><th scope="col">Next step</th><th scope="col">Source</th></tr>
+                    <tr><th scope="col">Chip</th><th scope="col">Strongest evidence today</th><th scope="col">Next step</th><th scope="col">Source</th></tr>
                   </thead>
                   <tbody>
                     {portfolio.map(([id, p]) => (
                       <tr key={id}>
-                        <th scope="row">{p.name}<span className="st-claim-tag num">{p.tag}</span></th>
-                        <td>{areas.filter(a => a.items.some(i => i.product === id)).map(a => a.name).join(' · ')}</td>
+                        <th scope="row"><a className="st-link" href={href('applications') + '#chip-' + id}>{p.name}</a><span className="st-claim-tag num">{p.tag}</span></th>
                         <td>{p.evidence}</td>
                         <td>{p.status ?? 'Not stated on the sheet.'}</td>
-                        <td><a className="st-link" href={url(ANNEX) + '#page=' + p.sheet} target="_blank" rel="noreferrer">Sheet {p.sheet}</a></td>
+                        <td className="st-cite">
+                          <a className="st-link" href={url(citeDoc(p.evidenceDoc).pdf)} target="_blank" rel="noreferrer">
+                            {p.evidenceDoc === 'doc5' ? 'Whitepaper v3, §3' : `Annex v3, sheet ${p.sheet}`}
+                          </a>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

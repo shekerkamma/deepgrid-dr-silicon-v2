@@ -7,7 +7,6 @@ import {FilmMoment, type Clip} from './evidence-clip';
 import {diagnosticTasks, type UseCase} from './diagnostic-tasks';
 import {clips, families, models, needsResolution, sockets, SOCKET_SOURCE} from './applications-story-data';
 import ApplicationsPortfolio from './applications-portfolio';
-import './story.css';
 
 /** /applications told as a story: docs/applications-story.md is the storyboard, and the playbook
  *  (public/downloads/docs/deepgrid-dg32-ai-30-use-cases.pdf) is its spine, in its own order.

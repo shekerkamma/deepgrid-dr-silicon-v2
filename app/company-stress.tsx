@@ -1,7 +1,8 @@
 'use client';
 
 import {useState} from 'react';
-import {fy31Rows, splitVerdict, type PlanRow} from './company-content';
+import {fy31Chip, fy31Rows, splitVerdict, type PlanRow} from './company-content';
+import {useNav} from './shell';
 import './company.css';
 
 /** Break the plan yourself. Two tests from the master whitepaper, applied by the reader: pull any one
@@ -9,6 +10,7 @@ import './company.css';
  *  (the price test). Every figure shown is the source's own row, or a sum of them. */
 export default function CompanyStress() {
   const [pulled, setPulled] = useState<string | null>(null);
+  const {href} = useNav();
   const [crash, setCrash] = useState(false);
 
   const value = (r: PlanRow) => (crash ? r.crash : r.plan);
@@ -56,6 +58,11 @@ export default function CompanyStress() {
                 <span className="dr-stress-val">{r.id === pulled ? 'pulled' : `₹${v} Cr`}</span>
               </button>
               <p className="dr-stress-why">{crash && r.id !== pulled ? r.why : ' '}</p>
+              <p className="dr-stress-chip">
+                {fy31Chip[r.id]
+                  ? <a className="st-link" href={href('applications') + '#chip-' + fy31Chip[r.id]!.id}>{fy31Chip[r.id]!.name}</a>
+                  : 'Several screened chips; the whitepaper does not split this row'}
+              </p>
             </li>
           );
         })}
@@ -71,6 +78,7 @@ export default function CompanyStress() {
         <p>{splitVerdict.quote}</p>
         <cite>{splitVerdict.cite}</cite>
       </blockquote>
+      <p className="dr-stress-key">{splitVerdict.key}</p>
       <p className="disclaimer">
         Rows and crash values are the whitepaper’s own (§12.2, p. 60). Totals are those rows added up; pulling a row and
         crashing prices together is arithmetic on them, not a forecast.

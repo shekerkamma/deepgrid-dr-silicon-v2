@@ -553,3 +553,5 @@
   font-weight: 400;
   color: var(--copper);
 }
+/* a citation in a register table stays on one line */
+.st-cite { white-space: nowrap; }

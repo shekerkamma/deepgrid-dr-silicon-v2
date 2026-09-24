@@ -143,3 +143,21 @@
   .dr-stress-toggle,
   .dr-stress-reset { transition: none; }
 }
+/* the chip a revenue row names, linking to its card on /applications */
+.dr-stress-chip {
+  margin: 2px 12px 0;
+  padding-left: calc(11rem + 16px);
+  font-size: var(--text-meta);
+  color: var(--ink-2);
+}
+.dr-stress-chip .st-link { min-height: 24px; display: inline-flex; align-items: center; }
+.dr-stress-key {
+  margin: 10px 0 0;
+  max-width: 64ch;
+  font-size: var(--text-control);
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+@media (max-width: 760px) {
+  .dr-stress-chip { padding-left: 0; }
+}

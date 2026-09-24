@@ -87,6 +87,16 @@ export const revenueBuild: [string, string][] = [
  *  crash"). Both columns are the source's numbers; the page only adds and subtracts them. Pulling the
  *  meter row gives 520, which is the whitepaper's own figure for exactly that failure. */
 export type PlanRow = {id: string; name: string; plan: number; crash: number; why: string};
+/** `chip` links a row to the chip it names on /applications (#chip-<id>). "Defence (screened)" pools
+ *  several screened chips that the whitepaper does not split, so it names none. */
+export const fy31Chip: Record<string, {id: string; name: string} | null> = {
+  meters: {id: 'sku2', name: 'SKU-2 smart-meter SoC'},
+  motors: {id: 'sku1', name: 'SKU-1 BLDC motor controller'},
+  defence: null,
+  drones: {id: 'd100', name: 'D100 drone SoC'},
+  vehicle: {id: 'sku9', name: 'SKU-9 zonal gateway'},
+};
+
 export const fy31Rows: PlanRow[] = [
   {id: 'meters',  name: 'Smart meters',       plan: 480, crash: 340, why: 'Tender pricing squeezes 30%.'},
   {id: 'motors',  name: 'Motor controllers',  plan: 220, crash: 130, why: 'The most exposed chip: 40% off.'},
@@ -102,6 +112,9 @@ export const splitVerdict = {
   // quotation that has been re-punctuated is no longer the source's words.
   quote: 'So the total holds and the split does not — 70 % of FY31 sits on two chips, while chips 9, 7 and 4 are planned at under a tenth of theirs. We would rebalance before an institutional round.',
   cite: 'Master whitepaper v3, §13, p.\u00a063',
+  // The whitepaper numbers chips 1-10 (its p. 67 table: 9 = vehicle gateway, 10 = drone brain); the rest of
+  // the site names them by SKU. The key keeps the quote verbatim and still readable against /applications.
+  key: 'The whitepaper numbers the chips: the two carrying 70 % are chip 2, the smart-meter SoC, and chip 1, the BLDC motor controller; chip 9 is the zonal gateway, chip 7 the 77 GHz radar and chip 4 DG32-LITE.',
 };
 
 export const moats = [
@@ -113,16 +126,16 @@ export const moats = [
 ];
 
 export const stopRules: [string, string][] = [
-  ['S1: signature gate', 'If the anchor customer for Chip 2 has not signed a binding letter by the factory-order cutoff, Chip 2 pauses for one cycle and its capital moves to Chips 1 and 3.'],
-  ['S2: screening failure', 'If Chip 6 fails military screening twice, every forward defence revenue projection is deferred by 12 months, across all materials, within 30 days.'],
+  ['S1: signature gate', 'If the anchor customer for Chip 2, the smart-meter SoC, has not signed a binding letter by the factory-order cutoff, Chip 2 pauses for one cycle and its capital moves to Chips 1 and 3, the BLDC motor controller and the high-reliability power IC.'],
+  ['S2: screening failure', 'If Chip 6, the voltage supervisor, fails military screening twice, every forward defence revenue projection is deferred by 12 months, across all materials, within 30 days.'],
   ['S3: commercial exit', 'In FY29, if delivered Chinese component pricing falls below DeepGrid’s bare manufacturing cost, exit ceiling-fan drivers and concentrate on two-wheelers and proprietary modules.'],
   ['S4: SCL Mohali lateness', 'If SCL Mohali slips by more than two manufacturing cycles, declare the delay publicly and run production only at SkyWater and IHP.'],
 ];
 
 export const fundsAllocation: [string, string, string][] = [
-  ['Factory runs and mask sets', '₹3.60 Cr (36%)', 'Six sky130 MPW runs and one IHP SiGe run (₹1.34 Cr), then two production mask sets and first wafers for Chips 1 and 2 (₹2.26 Cr)'],
+  ['Factory runs and mask sets', '₹3.60 Cr (36%)', 'Six sky130 MPW runs and one IHP SiGe run (₹1.34 Cr), then two production mask sets and first wafers for Chips 1 and 2, the BLDC motor controller and the smart-meter SoC (₹2.26 Cr)'],
   ['Engineering payroll', '₹2.40 Cr (24%)', 'Five to seven engineers over 24 months at a Hyderabad cost base'],
-  ['Qualification and approval', '₹1.80 Cr (18%)', 'Four product qualifications: MIL-STD-883, JSS, CEMILAC, and the Chip 6 pathfinder'],
+  ['Qualification and approval', '₹1.80 Cr (18%)', 'Four product qualifications: MIL-STD-883, JSS, CEMILAC, and the Chip 6 (voltage supervisor) pathfinder'],
   ['ATE testing line', '₹1.20 Cr (12%)', 'Automated test equipment, custom load boards, and wafer sort'],
   ['Sales and working capital', '₹1.00 Cr (10%)', 'Evaluation kits, datasheets, distributor onboarding, and customer engineering'],
 ];
