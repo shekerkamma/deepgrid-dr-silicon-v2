@@ -154,12 +154,6 @@ export default function ApplicationsPortfolio() {
                     const href = deep ? '#st-answer' : url(PDF) + '#page=' + r.sheet;
                     return (
                       <a key={r.id} className="pf-card" href={href} {...(deep ? {} : {target: '_blank', rel: 'noreferrer'})}>
-                        {s && (
-                          <figure className="pf-card-scene">
-                            <img src={url(s.src)} alt="" width={1376} height={768} loading="lazy" decoding="async"/>
-                            <figcaption>Application concept</figcaption>
-                          </figure>
-                        )}
                         <div className="pf-card-body">
                           <span className="pf-meta">{a.name}<span className="num">{r.tag}</span></span>
                           <h3>{r.name}</h3>

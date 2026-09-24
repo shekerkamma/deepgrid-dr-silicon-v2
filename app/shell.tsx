@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {ArrowUpRight, ArrowRight, ArrowLeft, Menu, X} from 'lucide-react';
 import {navRoutes, byId, nextRoute, prevRoute, resolveTarget, url, type RouteId} from './routes';
 import {useReveal, useScrollVars} from './motion';
-import {useCount, useDraw, useRail} from './devices';
+import {useDraw, useRail} from './devices';
 
 function Brand() {
   return (
@@ -33,7 +33,6 @@ export function Shell({
 
   useScrollVars();
   useReveal(route);
-  useCount(route);
   useDraw(route);
   useRail(route);
 
@@ -84,6 +83,13 @@ export function Shell({
           </nav>
         )}
 
+        {(route === 'technology' || here.parent === 'technology') && (
+          <nav className="technology-nav" aria-label="Technology sections">
+            {(['technology', 'safety', 'control', 'die', 'package'] as const).map(id => (
+              <a key={id} href={href(byId[id].href)} aria-current={route === id ? 'page' : undefined}>{byId[id].label}</a>
+            ))}
+          </nav>
+        )}
         {children}
 
         {(prev || next) && (

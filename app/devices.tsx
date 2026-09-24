@@ -1,13 +1,10 @@
 'use client';
 import {useEffect} from 'react';
 
-// Three scroll devices beyond the site's entrance reveal, so a section is not just the previous
+// Two scroll devices beyond the site's entrance reveal, so a section is not just the previous
 // section shown again. Each is selector-driven off the existing markup: no view changes its DOM,
-// its copy or its order to get one. All three honour reduced motion by rendering the final state.
+// its copy or its order to get one. Both honour reduced motion by rendering the final state.
 //
-//   count  numbers climb to their value when their block arrives (headline metrics, loop budget,
-//          fetch-bound facts, package facts). Only values already printed in the markup are ever
-//          shown, so nothing here can invent a figure.
 //   draw   the Fmax bars and the loop-budget stack grow from their own baseline instead of being
 //          present at full length, which is what makes a chart read as measured rather than drawn.
 //   rail   the roadmap travels sideways under a held heading. Chronology reads as lateral travel;
@@ -35,50 +32,6 @@ function sweep(nodes: HTMLElement[], hit: (el: HTMLElement) => void, line = 0.9)
   addEventListener('resize', on);
   run();
   return () => { removeEventListener('scroll', on); removeEventListener('resize', on); cancelAnimationFrame(frame); };
-}
-
-// --- count -------------------------------------------------------------------------------------
-// Values are read back out of the DOM, so the number that lands is the number the page already
-// stated. A value with no digits, or one already counted, is left alone.
-const COUNT = ['.metrics-strip strong', '.dr-stats strong', '.dr-factcards>div>strong', '.dr-stats-grid strong']
-  .map(s => 'main ' + s).join(',');
-const NUM = /^(\D*?)([\d,]+(?:\.\d+)?)([\s\S]*)$/;
-
-export function useCount(key: string) {
-  useEffect(() => {
-    const soft = reduced();
-    const targets: HTMLElement[] = [];
-    for (const el of document.querySelectorAll<HTMLElement>(COUNT)) {
-      const m = NUM.exec(el.textContent || '');
-      if (!m || el.dataset.ct !== undefined) continue;
-      const to = Number(m[2].replace(/,/g, ''));
-      const grouped = m[2].includes(',');
-      // a bare four-digit value with no separator is a year or an identifier, never a quantity
-      if (!isFinite(to) || to <= 0 || (!grouped && to >= 1000)) continue;
-      el.dataset.ct = ''; el.dataset.ctPre = m[1]; el.dataset.ctPost = m[3];
-      el.dataset.ctTo = String(to); el.dataset.ctDp = String((m[2].split('.')[1] || '').length);
-      el.dataset.ctGrp = grouped ? '1' : '';
-      // hold the final width so the row cannot reflow while the digits change
-      el.style.setProperty('font-variant-numeric', 'tabular-nums');
-      if (!soft) el.textContent = m[1] + (0).toFixed(Number(el.dataset.ctDp)) + m[3];
-      targets.push(el);
-    }
-    if (soft || !targets.length) return;
-    const stop = sweep(targets, el => {
-      const to = Number(el.dataset.ctTo), dp = Number(el.dataset.ctDp);
-      const pre = el.dataset.ctPre || '', post = el.dataset.ctPost || '';
-      const grouped = el.dataset.ctGrp === '1';
-      const t0 = performance.now(), ms = 900;
-      const step = (t: number) => {
-        const p = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - p, 3);
-        const v = to * e;
-        el.textContent = pre + (grouped ? Math.round(v).toLocaleString('en-US') : v.toFixed(dp)) + post;
-        if (p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-    return stop;
-  }, [key]);
 }
 
 // --- draw --------------------------------------------------------------------------------------
